@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface PatientsRepository extends MongoRepository<Patient, ObjectId> {
-
+    Optional<Patient> findByPatientId(ObjectId patientId);
     Optional<Patient> findPatientByName(String name);
 }

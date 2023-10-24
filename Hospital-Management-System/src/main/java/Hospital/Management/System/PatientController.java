@@ -12,12 +12,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/patients")
-public class HMSController {
+public class PatientController {
 
 //autowired instantiate the class
     @Autowired
     private PatientService _patientService;
-    private MedicalHistoryService _medicalHistoryService;
 
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients(){
@@ -25,8 +24,15 @@ public class HMSController {
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<Optional<Patient>> getPatient(@PathVariable ObjectId id){
-        return  new ResponseEntity<Optional<Patient>>(_patientService.singelPatient(id),HttpStatus.OK);
+    public  ResponseEntity<Optional<Patient>> getPatient(@PathVariable String patientId){
+        ObjectId objectId = new ObjectId(patientId);
+        Optional<Patient> patient = _patientService.singelPatient(objectId);
+        if (patient != null) {
+            return new ResponseEntity<Optional<Patient>>(_patientService.singelPatient(objectId),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
 //    @PostMapping
@@ -42,9 +48,15 @@ public class HMSController {
     }
 
     @PutMapping
-    public ResponseEntity<Patient> updatePatient(@RequestBody Map<String, String> payload){
-        return  new ResponseEntity<Patient>(_patientService.createPatient(Integer.parseInt(payload.get("Age")),payload.get("Name"),payload.get("Gender")
-                ,payload.get("Contacts"),payload.get("InsuranceDetails")), HttpStatus.CREATED);
+    public ResponseEntity<Patient> updatePatient(@RequestBody String patientId,@RequestBody Patient updatedPatientInfo){
+        ObjectId objectId = new ObjectId(patientId);
+        Patient updatedPatient=_patientService.updatePatientInformation(objectId,updatedPatientInfo);
+
+        if (updatedPatient != null) {
+            return new ResponseEntity<>(updatedPatient, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

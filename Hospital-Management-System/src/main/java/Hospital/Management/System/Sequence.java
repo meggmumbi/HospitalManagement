@@ -15,8 +15,5 @@ public class Sequence {
     private String id;
     private int seq;
 
-    public Sequence(String id, int seq) {
-        this.id = id;
-        this.seq = seq;
-    }
+
 }

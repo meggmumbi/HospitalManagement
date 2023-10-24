@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MedicalHistoryService {
     @Autowired
@@ -15,16 +17,22 @@ public class MedicalHistoryService {
     @Autowired
     private MongoTemplate _mongoTemplate;
 
-    public  MedicalHistory createMedicalHistory(String Diagnosis, String Background, String Symptoms, String Remarks, String patientId){
-        MedicalHistory history = _medicalHistoryRepository.insert(new MedicalHistory(Diagnosis,Background,Symptoms,Remarks));
-
-
-
-        _mongoTemplate.update(Patient.class)
-                .matching(Criteria.where("patientid").is(patientId))
-                .apply(new Update().push("").value(history))
-                .first();
-
-        return  history;
+    public MedicalHistory createMedicalHistory(MedicalHistory medicalHistory){
+        return  _medicalHistoryRepository.save(medicalHistory);
     }
+
+    public  MedicalHistory getMedicalHistory(ObjectId medicalHistoryId){
+        return _medicalHistoryRepository.findById(medicalHistoryId).orElse(null);
+    }
+
+    public List<MedicalHistory> getAllMedicalHostories(){
+        return _medicalHistoryRepository.findAll();
+    }
+    public void deleteMedicalHistory(ObjectId medicalHistoryId){
+        _medicalHistoryRepository.deleteById(medicalHistoryId);
+    }
+
+
+
+
 }

@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 
 @Document(collection = "medicalHistory")
 @Data
@@ -13,17 +16,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class MedicalHistory {
     @Id
-    private ObjectId Medicalhitoryid;
-    private ObjectId PatientId;
+    private ObjectId MedicalHistoryId;
+
+    @DBRef
+    private Patient patient;
     private String Diagnosis;
     private String Background;
     private String Symptoms;
     private String Remarks;
+    private Date Date;
 
-    public MedicalHistory(String diagnosis, String background, String symptoms, String remarks) {
-        Diagnosis = diagnosis;
-        Background = background;
-        Symptoms = symptoms;
-        Remarks = remarks;
-    }
+
 }
