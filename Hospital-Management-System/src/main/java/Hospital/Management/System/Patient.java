@@ -22,34 +22,35 @@ public class Patient {
     public static final String SEQUENCE_NAME = "patient_sequence";
 
     @Id
-    private ObjectId PatientId;
+    private long patientId;
 
-    private int Age;
-    private String Name;
-    private String Gender;
-    private String Allergies;
-    private String Contacts;
+    private int age;
+    private String name;
+    private String gender;
+    private String allergies;
+    private String contacts;
     private double weight;
     private double height;
-    private double Systolic;
+    private double systolic;
     private  double diastolic;
     private String medicalHistorySummery;
     private String observations;
 
-    private String Diagnosis;
+    private String diagnosis;
 
-    private String AssignedDoctor;
-    private String InsuranceDetails;
+    private String assignedDoctor;
+    private String insuranceDetails;
 
     @DBRef
-    private List<MedicalHistory> MedicalHistory;
+    private List<MedicalHistory> medicalHistory;
 
 
-    public Patient(int age, String name, String gender, String contacts,  String insuranceDetails) {
-        Age = age;
-        Name = name;
-        Gender = gender;
-        Contacts = contacts;
-        InsuranceDetails = insuranceDetails;
+    public Patient(long PatientId,int age, String name, String gender, String contacts,  String insuranceDetails) {
+        patientId = PatientId;
+        this.age = age;
+        this.name = name;
+        this.gender = gender;
+        this.contacts = contacts;
+        this.insuranceDetails = insuranceDetails;
     }
 }

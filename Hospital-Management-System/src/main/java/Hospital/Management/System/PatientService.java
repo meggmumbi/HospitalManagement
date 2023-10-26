@@ -25,21 +25,21 @@ public class PatientService {
         return  _patientRepository.findAll();
     }
 
-    public Optional<Patient> singelPatient(ObjectId id){
-        return  _patientRepository.findByPatientId(id);
+    public Optional<Patient> singlePatient(Long PatientId){
+        return Optional.ofNullable(_patientRepository.findBypatientId(PatientId).orElseThrow(() -> new PatientNotFoundException("Patient not found with id: " + PatientId)));
     }
 
-    public  Patient createPatient(int Age, String Name, String Gender, String Contacts,String InsuranceDetails) {
-        Patient newPatient = _patientRepository.insert(new Patient(Age, Name, Gender, Contacts,InsuranceDetails));
+    public  Patient createPatient(Long patientId,int age, String name, String gender, String contacts,String insuranceDetails) {
+        Patient newPatient = _patientRepository.insert(new Patient(patientId,age, name, gender, contacts,insuranceDetails));
         return  newPatient;
     }
 
-    public  Patient updatePatientInformation(ObjectId patientId, Patient updatedPatientInfo){
+    public  Patient updatePatientInformation(Long patientId, Patient updatedPatientInfo){
         Query query = new Query(Criteria.where("_id").is(patientId));
         Update update = new Update();
 
         if(updatedPatientInfo.getAllergies() != null){
-            update.set("Allergies",updatedPatientInfo.getAllergies());
+            update.set("allergies",updatedPatientInfo.getAllergies());
         }
         if (updatedPatientInfo.getWeight() != 0) {
             update.set("weight", updatedPatientInfo.getWeight());
@@ -48,7 +48,7 @@ public class PatientService {
             update.set("height", updatedPatientInfo.getHeight());
         }
         if (updatedPatientInfo.getSystolic() != 0) {
-            update.set("Systolic", updatedPatientInfo.getSystolic());
+            update.set("systolic", updatedPatientInfo.getSystolic());
         }
         if (updatedPatientInfo.getDiastolic() != 0) {
             update.set("diastolic", updatedPatientInfo.getDiastolic());
@@ -62,7 +62,7 @@ public class PatientService {
 
         mongoTemplate.updateFirst(query,update,Patient.class);
 
-        return _patientRepository.findByPatientId(patientId).orElse(null);
+        return _patientRepository.findBypatientId(patientId).orElse(null);
     }
 
 

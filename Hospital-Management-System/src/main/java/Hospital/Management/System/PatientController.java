@@ -17,40 +17,59 @@ public class PatientController {
 //autowired instantiate the class
     @Autowired
     private PatientService _patientService;
+    @Autowired
+    private SequenceService _sequenceService;
 
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients(){
        return new ResponseEntity<List<Patient>>(_patientService.allPatients(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public  ResponseEntity<Optional<Patient>> getPatient(@PathVariable String patientId){
-        ObjectId objectId = new ObjectId(patientId);
-        Optional<Patient> patient = _patientService.singelPatient(objectId);
+    @GetMapping("/{PatientId}")
+    public  ResponseEntity<Optional<Patient>> getPatient(@PathVariable String PatientId){
+
+        Optional<Patient> patient = _patientService.singlePatient(Long.parseLong(PatientId));
         if (patient != null) {
-            return new ResponseEntity<Optional<Patient>>(_patientService.singelPatient(objectId),HttpStatus.OK);
+            return new ResponseEntity<Optional<Patient>>(_patientService.singlePatient(Long.parseLong(PatientId)),HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }
 
-//    @PostMapping
-//    public ResponseEntity<MedicalHistory> createMedicalHistory(@RequestBody Map<String, String> payload){
-//        return  new ResponseEntity<MedicalHistory>(_medicalHistoryService.createMedicalHistory(payload.get("Diagnosis"),
-//                payload.get("Background"),payload.get("Symptoms"),payload.get("Remarks"),payload.get("patientId")), HttpStatus.CREATED);
-//    }
-
     @PostMapping
-    public ResponseEntity<Patient> createPatient(@RequestBody Map<String, String> payload){
-        return  new ResponseEntity<Patient>(_patientService.createPatient(Integer.parseInt(payload.get("Age")),payload.get("Name"),payload.get("Gender")
-                ,payload.get("Contacts"),payload.get("InsuranceDetails")), HttpStatus.CREATED);
+    public ResponseEntity<Patient> createPatient(@RequestBody Map<String, String> payload)
+    {
+        long patientId = generateNextPatientId();
+
+        // Create a new patient with the custom ID
+        Patient newPatient = _patientService.createPatient(
+                patientId,
+                Integer.parseInt(payload.get("age")),
+                payload.get("name"),
+                payload.get("gender"),
+                payload.get("contacts"),
+                payload.get("insuranceDetails")
+        );
+
+        return new ResponseEntity<>(newPatient, HttpStatus.CREATED);
     }
 
-    @PutMapping
-    public ResponseEntity<Patient> updatePatient(@RequestBody String patientId,@RequestBody Patient updatedPatientInfo){
-        ObjectId objectId = new ObjectId(patientId);
-        Patient updatedPatient=_patientService.updatePatientInformation(objectId,updatedPatientInfo);
+    private long generateNextPatientId() {
+        // Get the current sequence value for patient IDs
+        long sequenceValue = _sequenceService.getPatientSequenceValue();
+
+        // Increment the sequence value and return it
+        _sequenceService.incrementPatientSequenceValue();
+
+        return sequenceValue;
+    }
+
+
+    @RequestMapping(value = "/{patientId}", method = RequestMethod.PUT)
+    public ResponseEntity<Patient> updatePatient(@PathVariable String patientId, @RequestBody Patient updatedPatientInfo) {
+
+        Patient updatedPatient=_patientService.updatePatientInformation(Long.parseLong(patientId),updatedPatientInfo);
 
         if (updatedPatient != null) {
             return new ResponseEntity<>(updatedPatient, HttpStatus.OK);
