@@ -17,20 +17,22 @@ public class PharmacyController {
 
     @PostMapping
     public ResponseEntity<Pharmacy> createPharmacy(@RequestBody Pharmacy pharmacy) {
+
         Pharmacy createdPharmacy = _pharmacyService.createPharmacy(pharmacy);
         return new ResponseEntity<>(createdPharmacy, HttpStatus.CREATED);
     }
 
     @GetMapping
     public ResponseEntity<List<Pharmacy>> getAllPharmacies() {
+
         List<Pharmacy> pharmacies = _pharmacyService.getAllPharmacies();
         return new ResponseEntity<>(pharmacies, HttpStatus.OK);
     }
 
     @GetMapping("/{itemId}")
     public ResponseEntity<Pharmacy> getPharmacy(@PathVariable String itemId) {
-        ObjectId objectId = new ObjectId(itemId);
-        Optional<Pharmacy> pharmacy = _pharmacyService.getPharmacy(objectId);
+
+        Optional<Pharmacy> pharmacy = _pharmacyService.getPharmacy(Long.parseLong(itemId));
         if (pharmacy.isPresent()) {
             return new ResponseEntity<>(pharmacy.get(), HttpStatus.OK);
         } else {
@@ -40,8 +42,8 @@ public class PharmacyController {
 
     @PutMapping("/{itemId}")
     public ResponseEntity<Pharmacy> updatePharmacy(@PathVariable String itemId, @RequestBody Pharmacy updatedPharmacy) {
-        ObjectId objectId = new ObjectId(itemId);
-        Pharmacy updatedPharmacyEntity = _pharmacyService.updatePharmacy(objectId, updatedPharmacy);
+
+        Pharmacy updatedPharmacyEntity = _pharmacyService.updatePharmacy(Long.parseLong(itemId), updatedPharmacy);
 
         if (updatedPharmacyEntity != null) {
             return new ResponseEntity<>(updatedPharmacyEntity, HttpStatus.OK);
@@ -52,8 +54,8 @@ public class PharmacyController {
 
     @DeleteMapping("/{itemId}")
     public ResponseEntity<Void> deletePharmacy(@PathVariable String itemId) {
-        ObjectId objectId = new ObjectId(itemId);
-        boolean deleted = _pharmacyService.deletePharmacy(objectId);
+
+        boolean deleted = _pharmacyService.deletePharmacy(Long.parseLong(itemId));
 
         if (deleted) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

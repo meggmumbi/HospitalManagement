@@ -17,13 +17,13 @@ public class SequenceService {
 
 
 
-    public long getPatientSequenceValue() {
-        Query query = new Query(Criteria.where("_id").is("patient_sequence"));
+    public long getSequenceValue(String sequenceName) {
+        Query query = new Query(Criteria.where("_id").is(sequenceName));
         Sequence sequence = mongoTemplate.findOne(query, Sequence.class);
 
         if (sequence == null) {
             sequence = new Sequence();
-            sequence.setId("patient_sequence");
+            sequence.setId(sequenceName);
             sequence.setSeq(1);
             mongoTemplate.save(sequence);
         }
@@ -31,8 +31,8 @@ public class SequenceService {
         return sequence.getSeq();
     }
 
-    public void incrementPatientSequenceValue() {
-        Query query = new Query(Criteria.where("_id").is("patient_sequence"));
+    public void incrementSequenceValue(String sequenceName) {
+        Query query = new Query(Criteria.where("_id").is(sequenceName));
         Update update = new Update().inc("seq", 1);
         mongoTemplate.updateFirst(query, update, Sequence.class);
     }

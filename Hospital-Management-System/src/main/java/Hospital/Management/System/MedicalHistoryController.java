@@ -24,8 +24,8 @@ public class MedicalHistoryController {
 
     @GetMapping("/{medicalHistoryId}")
     public ResponseEntity<MedicalHistory> getMedicalHistory(@PathVariable String medicalHistoryId){
-        ObjectId objectId = new ObjectId(medicalHistoryId);
-        MedicalHistory medicalHistory = _medicalHistoryService.getMedicalHistory((objectId));
+
+        MedicalHistory medicalHistory = _medicalHistoryService.getMedicalHistory((Long.parseLong(medicalHistoryId)));
         if(medicalHistory != null){
             return new ResponseEntity<>(medicalHistory, HttpStatus.OK);
         }
@@ -42,8 +42,18 @@ public class MedicalHistoryController {
 
     @DeleteMapping("/{medicalHistoryId}")
     public ResponseEntity<Void> deleteMedicalHistory(@PathVariable String medicalHistoryId) {
-        ObjectId objectId = new ObjectId(medicalHistoryId);
-        _medicalHistoryService.deleteMedicalHistory(objectId);
+        _medicalHistoryService.deleteMedicalHistory(Long.parseLong(medicalHistoryId));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/{medicalHistoryId}")
+    public ResponseEntity<MedicalHistory> updateHospital(@PathVariable String medicalHistoryId, @RequestBody MedicalHistory updatedMedicalHistory) {
+
+        MedicalHistory updatedMedicalHistoryEntity = _medicalHistoryService.updateMedicalHistory(Long.parseLong(medicalHistoryId), updatedMedicalHistory);
+        if (updatedMedicalHistoryEntity != null) {
+            return new ResponseEntity<>(updatedMedicalHistoryEntity, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

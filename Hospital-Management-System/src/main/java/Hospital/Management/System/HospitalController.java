@@ -24,8 +24,8 @@ public class HospitalController {
 
     @GetMapping("/{hospitalId}")
     public ResponseEntity<Hospital> getHospital(@PathVariable String hospitalId) {
-        ObjectId objectId = new ObjectId(hospitalId);
-        Optional<Hospital> hospital = _hospitalService.getHospital(objectId);
+
+        Optional<Hospital> hospital = _hospitalService.getHospital(Long.parseLong(hospitalId));
         if (hospital.isPresent()) {
             return new ResponseEntity<>(hospital.get(), HttpStatus.OK);
         } else {
@@ -41,10 +41,22 @@ public class HospitalController {
 
     @PutMapping("/{hospitalId}")
     public ResponseEntity<Hospital> updateHospital(@PathVariable String hospitalId, @RequestBody Hospital updatedHospital) {
-        ObjectId objectId = new ObjectId(hospitalId);
-        Hospital updatedHospitalEntity = _hospitalService.updateHospital(objectId, updatedHospital);
+
+        Hospital updatedHospitalEntity = _hospitalService.updateHospital(Long.parseLong(hospitalId), updatedHospital);
         if (updatedHospitalEntity != null) {
             return new ResponseEntity<>(updatedHospitalEntity, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/{hospitalId}")
+    public ResponseEntity<Void> deletePharmacy(@PathVariable String hospitalId) {
+
+        boolean deleted = _hospitalService.deleteHospital(Long.parseLong(hospitalId));
+
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

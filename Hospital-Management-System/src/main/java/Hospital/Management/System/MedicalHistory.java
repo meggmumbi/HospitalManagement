@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,16 +16,19 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MedicalHistory {
+    @Transient
+    public static final String SEQUENCE_NAME = "medicalHistory_sequence";
     @Id
-    private ObjectId MedicalHistoryId;
+    private Long medicalHistoryId;
 
     @DBRef
     private Patient patient;
-    private String Diagnosis;
-    private String Background;
-    private String Symptoms;
-    private String Remarks;
-    private Date Date;
+    private Long patientId;
+    private String diagnosis;
+    private String background;
+    private String symptoms;
+    private String remarks;
+    private Date dateCreated;
 
 
 }

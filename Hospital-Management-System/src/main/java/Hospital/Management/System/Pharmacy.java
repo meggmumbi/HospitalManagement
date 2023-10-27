@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "pharmacy")
@@ -12,11 +13,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pharmacy {
+    @Transient
+    public static final String SEQUENCE_NAME = "pharmacy_sequence";
     @Id
-    private ObjectId ItemId;
-    private String Name;
-    private String Category;
-    private int Quantity;
-    private double UnitPrice;
-    private String SupplierInformation;
+    private Long itemId;
+    private String name;
+    private String category;
+    private int quantity;
+    private double unitPrice;
+    private String supplierInformation;
 }
