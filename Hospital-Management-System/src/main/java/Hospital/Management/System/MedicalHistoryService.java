@@ -26,21 +26,26 @@ public class MedicalHistoryService {
     private MongoTemplate _mongoTemplate;
 
     @Autowired
+    private  SequenceService _sequenceService;
+
+    @Autowired
     private MongoOperations mongoOperations;
 
 
     public MedicalHistory createMedicalHistory(MedicalHistory medicalHistory){
-        Long medicalHistoryId = getNextSequence("medicalHistory_sequence");
+        Long medicalHistoryId = generateNextId("medicalHistory_sequence");
         medicalHistory.setMedicalHistoryId(medicalHistoryId);
         return  _medicalHistoryRepository.save(medicalHistory);
     }
 
-    private Long getNextSequence(String sequenceName) {
-        Query query = new Query(Criteria.where("_id").is(sequenceName));
-        Update update = new Update().inc("value", 1);
-        Sequence sequence = mongoOperations.findAndModify(query, update,
-                FindAndModifyOptions.options().returnNew(true).upsert(true), Sequence.class);
-        return sequence.getSeq();
+    private long generateNextId(String sequenceName) {
+        // Get the current sequence value for patient IDs
+        long sequenceValue = _sequenceService.getSequenceValue(sequenceName);
+
+        // Increment the sequence value and return it
+        _sequenceService.incrementSequenceValue(sequenceName);
+
+        return sequenceValue;
     }
 
     public  MedicalHistory getMedicalHistory(Long medicalHistoryId){

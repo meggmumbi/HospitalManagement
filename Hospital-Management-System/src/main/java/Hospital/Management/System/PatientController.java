@@ -40,7 +40,7 @@ public class PatientController {
     @PostMapping
     public ResponseEntity<Patient> createPatient(@RequestBody Map<String, String> payload)
     {
-        long patientId = generateNextPatientId();
+        long patientId = generateNextPatientId("patient_sequence");
 
         // Create a new patient with the custom ID
         Patient newPatient = _patientService.createPatient(
@@ -55,12 +55,12 @@ public class PatientController {
         return new ResponseEntity<>(newPatient, HttpStatus.CREATED);
     }
 
-    private long generateNextPatientId() {
+    private long generateNextPatientId(String sequenceName) {
         // Get the current sequence value for patient IDs
-        long sequenceValue = _sequenceService.getPatientSequenceValue();
+        long sequenceValue = _sequenceService.getSequenceValue(sequenceName);
 
         // Increment the sequence value and return it
-        _sequenceService.incrementPatientSequenceValue();
+        _sequenceService.incrementSequenceValue(sequenceName);
 
         return sequenceValue;
     }

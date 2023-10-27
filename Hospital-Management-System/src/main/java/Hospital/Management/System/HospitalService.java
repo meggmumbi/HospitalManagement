@@ -18,20 +18,25 @@ public class HospitalService {
     @Autowired
     private HospitalRepository hospitalRepository;
     @Autowired
+    private  SequenceService _sequenceService;
+    @Autowired
     private MongoOperations mongoOperations;
 
      public Hospital createHospital(Hospital hospital) {
-         Long hospitalId = getNextSequence("hospital_sequence");
+         Long hospitalId = generateNextId("hospital_sequence");
          hospital.setHospitalId(hospitalId);
         return hospitalRepository.save(hospital);
     }
 
-    private Long getNextSequence(String sequenceName) {
-        Query query = new Query(Criteria.where("_id").is(sequenceName));
-        Update update = new Update().inc("value", 1);
-        Sequence sequence = mongoOperations.findAndModify(query, update,
-                FindAndModifyOptions.options().returnNew(true).upsert(true), Sequence.class);
-        return sequence.getSeq();
+
+    private long generateNextId(String sequenceName) {
+        // Get the current sequence value for patient IDs
+        long sequenceValue = _sequenceService.getSequenceValue(sequenceName);
+
+        // Increment the sequence value and return it
+        _sequenceService.incrementSequenceValue(sequenceName);
+
+        return sequenceValue;
     }
 
     public Optional<Hospital> getHospital(Long hospitalId) {
