@@ -16,13 +16,14 @@ import java.util.List;
 @NoArgsConstructor
 public class Hospital {
     @Id
-    private ObjectId HospitalId;
-    private String Name;
-    private String Location;
-    private String Contacts;
-    private String Specialization;
+    private Long hospitalId;
+    private String name;
+    private String location;
+    private String contacts;
+    private String specialization;
     private List<String> facilities;
 
     @DBRef
     private List<Pharmacy> pharmacies;
+
 }

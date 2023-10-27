@@ -16,15 +16,16 @@ import java.util.Date;
 @NoArgsConstructor
 public class MedicalHistory {
     @Id
-    private ObjectId MedicalHistoryId;
+    private Long medicalHistoryId;
 
     @DBRef
     private Patient patient;
-    private String Diagnosis;
-    private String Background;
-    private String Symptoms;
-    private String Remarks;
-    private Date Date;
+    private Long patientId;
+    private String diagnosis;
+    private String background;
+    private String symptoms;
+    private String remarks;
+    private Date dateCreated;
 
 
 }

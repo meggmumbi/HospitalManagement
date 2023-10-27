@@ -13,10 +13,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 public class Pharmacy {
     @Id
-    private ObjectId ItemId;
-    private String Name;
-    private String Category;
-    private int Quantity;
-    private double UnitPrice;
-    private String SupplierInformation;
+    private Long itemId;
+    private String name;
+    private String category;
+    private int quantity;
+    private double unitPrice;
+    private String supplierInformation;
 }
