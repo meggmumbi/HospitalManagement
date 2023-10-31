@@ -28,5 +28,7 @@ public class Hospital {
 
     @DBRef
     private List<Pharmacy> pharmacies;
+    @DBRef
+    private List<User> users;
 
 }
