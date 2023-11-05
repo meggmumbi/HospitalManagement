@@ -35,6 +35,7 @@ public class Patient {
     private  double diastolic;
     private String medicalHistorySummery;
     private String observations;
+    private String status;
 
     private String diagnosis;
 

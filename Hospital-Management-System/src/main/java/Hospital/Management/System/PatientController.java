@@ -78,6 +78,18 @@ public class PatientController {
         }
     }
 
+    @DeleteMapping("/{patientId}")
+    public ResponseEntity<Void> deletePharmacy(@PathVariable String patientId) {
+
+        boolean deleted = _patientService.deletePharmacy(Long.parseLong(patientId));
+
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }
 
 

@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface PatientsRepository extends MongoRepository<Patient, ObjectId> {
     Optional<Patient> findBypatientId(Long patientId);
 
+    void deleteBypatientId(Long patientId);
 }

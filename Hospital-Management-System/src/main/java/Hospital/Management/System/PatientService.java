@@ -30,6 +30,8 @@ public class PatientService {
     }
 
     public  Patient createPatient(Long patientId,int age, String name, String gender, String contacts,String insuranceDetails) {
+
+
         Patient newPatient = _patientRepository.insert(new Patient(patientId,age, name, gender, contacts,insuranceDetails));
         return  newPatient;
     }
@@ -59,11 +61,24 @@ public class PatientService {
         if(updatedPatientInfo.getObservations() != null){
             update.set("observations", updatedPatientInfo.getObservations());
         }
+        if(updatedPatientInfo.getStatus() != null){
+            update.set("status", updatedPatientInfo.getStatus());
+        }
 
         mongoTemplate.updateFirst(query,update,Patient.class);
 
         return _patientRepository.findBypatientId(patientId).orElse(null);
     }
 
+    public boolean deletePharmacy(Long patientId) {
+        Optional<Patient> patientOptional = _patientRepository.findBypatientId(patientId);
+
+        if (patientOptional.isPresent()) {
+            _patientRepository.deleteBypatientId(patientId);
+            return true;
+        }
+
+        return false;
+    }
 
 }
