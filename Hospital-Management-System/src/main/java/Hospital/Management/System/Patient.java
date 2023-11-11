@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "patients")
@@ -36,6 +37,8 @@ public class Patient {
     private String medicalHistorySummery;
     private String observations;
     private String status;
+    private Date date;
+    private  String address;
 
     private String diagnosis;
 

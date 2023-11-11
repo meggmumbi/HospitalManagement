@@ -64,6 +64,12 @@ public class PatientService {
         if(updatedPatientInfo.getStatus() != null){
             update.set("status", updatedPatientInfo.getStatus());
         }
+        if(updatedPatientInfo.getAssignedDoctor() != null){
+            update.set("assignedDoctor", updatedPatientInfo.getAssignedDoctor());
+        }
+        if(updatedPatientInfo.getDate() != null){
+            update.set("date", updatedPatientInfo.getDate());
+        }
 
         mongoTemplate.updateFirst(query,update,Patient.class);
 
@@ -79,6 +85,10 @@ public class PatientService {
         }
 
         return false;
+    }
+
+    public List<Patient> getPatientsByStatus() {
+        return _patientRepository.findByStatusIn("Lab", "Triage");
     }
 
 }

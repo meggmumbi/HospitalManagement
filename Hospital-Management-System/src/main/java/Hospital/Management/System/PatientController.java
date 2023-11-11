@@ -90,6 +90,12 @@ public class PatientController {
         }
     }
 
+    @GetMapping("/getByStatus")
+    public ResponseEntity<List<Patient>> getPatientsByStatus() {
+        return new ResponseEntity<List<Patient>>(_patientService.getPatientsByStatus(), HttpStatus.OK);
+
+    }
+
 }
 
 
