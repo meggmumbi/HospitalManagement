@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,10 +30,10 @@ public class PatientService {
         return Optional.ofNullable(_patientRepository.findBypatientId(PatientId).orElseThrow(() -> new PatientNotFoundException("Patient not found with id: " + PatientId)));
     }
 
-    public  Patient createPatient(Long patientId,int age, String name, String gender, String contacts,String insuranceDetails) {
+    public  Patient createPatient(Long patientId, int age, String name, String gender, String contacts, String insuranceDetails, String address, Date registrationDate) {
 
 
-        Patient newPatient = _patientRepository.insert(new Patient(patientId,age, name, gender, contacts,insuranceDetails));
+        Patient newPatient = _patientRepository.insert(new Patient(patientId,age, name, gender, contacts,insuranceDetails,address,registrationDate));
         return  newPatient;
     }
 
@@ -67,8 +68,29 @@ public class PatientService {
         if(updatedPatientInfo.getAssignedDoctor() != null){
             update.set("assignedDoctor", updatedPatientInfo.getAssignedDoctor());
         }
-        if(updatedPatientInfo.getDate() != null){
-            update.set("date", updatedPatientInfo.getDate());
+        if(updatedPatientInfo.getRegistrationDate() != null){
+            update.set("date", updatedPatientInfo.getRegistrationDate());
+        }
+        if(updatedPatientInfo.getSampleDetails() != null){
+            update.set("sampleDetails", updatedPatientInfo.getSampleDetails());
+        }
+        if(updatedPatientInfo.getDateSampleTaken() != null){
+            update.set("dateSampleTaken", updatedPatientInfo.getDateSampleTaken());
+        }
+        if(updatedPatientInfo.getSampleType() != null){
+            update.set("sampleType", updatedPatientInfo.getSampleType());
+        }
+        if(updatedPatientInfo.getTestTypes() != null){
+            update.set("testTypes", updatedPatientInfo.getTestTypes());
+        }
+        if(updatedPatientInfo.getAdditionalTests() != null){
+            update.set("additionalTests", updatedPatientInfo.getAdditionalTests());
+        }
+        if(updatedPatientInfo.getClinicalInformation() != null){
+            update.set("clinicalInformation", updatedPatientInfo.getClinicalInformation());
+        }
+        if(updatedPatientInfo.getConclusion() != null){
+            update.set("conclusion", updatedPatientInfo.getConclusion());
         }
 
         mongoTemplate.updateFirst(query,update,Patient.class);

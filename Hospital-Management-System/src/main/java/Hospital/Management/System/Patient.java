@@ -37,24 +37,37 @@ public class Patient {
     private String medicalHistorySummery;
     private String observations;
     private String status;
-    private Date date;
+    private Date registrationDate;
     private  String address;
-
     private String diagnosis;
-
     private String assignedDoctor;
     private String insuranceDetails;
 
     @DBRef
     private List<MedicalHistory> medicalHistory;
 
+    ///////////////Labs///////////
+    private String sampleDetails;
+    private Date dateSampleTaken;
+    private String sampleType;
+    private String testTypes;
+    private String additionalTests;
+    private String clinicalInformation;
+    private String conclusion;
 
-    public Patient(long PatientId,int age, String name, String gender, String contacts,  String insuranceDetails) {
+
+
+
+
+
+    public Patient(long PatientId,int age, String name, String gender, String contacts,  String insuranceDetails, String address, Date registrationDate) {
         patientId = PatientId;
         this.age = age;
         this.name = name;
         this.gender = gender;
         this.contacts = contacts;
         this.insuranceDetails = insuranceDetails;
+        this.address = address;
+        this.registrationDate = registrationDate;
     }
 }
