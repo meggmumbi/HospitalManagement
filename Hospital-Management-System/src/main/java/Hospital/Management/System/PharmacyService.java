@@ -86,4 +86,18 @@ public class PharmacyService {
 
         return false;
     }
+
+    public void updatePharmacyItemQuantity(Long itemId, int quantity) {
+        Optional<Pharmacy> pharmacyOptional = _pharmacyRepository.findByitemId(itemId);
+
+        if (pharmacyOptional.isPresent()) {
+            Pharmacy existingPharmacy = pharmacyOptional.get();
+            // Update quantity
+            int currentQuantity = existingPharmacy.getQuantity();
+            existingPharmacy.setQuantity(currentQuantity - quantity);
+
+            _pharmacyRepository.save(existingPharmacy);
+        }
+    }
+
 }
