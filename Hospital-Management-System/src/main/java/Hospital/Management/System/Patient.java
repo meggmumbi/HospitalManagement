@@ -42,6 +42,7 @@ public class Patient {
     private String diagnosis;
     private String assignedDoctor;
     private String insuranceDetails;
+    private String prescription;
 
     @DBRef
     private List<MedicalHistory> medicalHistory;

@@ -92,6 +92,9 @@ public class PatientService {
         if(updatedPatientInfo.getConclusion() != null){
             update.set("conclusion", updatedPatientInfo.getConclusion());
         }
+        if(updatedPatientInfo.getPrescription() != null){
+            update.set("prescription", updatedPatientInfo.getPrescription());
+        }
 
         mongoTemplate.updateFirst(query,update,Patient.class);
 
@@ -111,6 +114,10 @@ public class PatientService {
 
     public List<Patient> getPatientsByStatus() {
         return _patientRepository.findByStatusIn("Lab", "Triage");
+    }
+
+    public List<Patient> getPatientsByPharmacyStatus() {
+        return _patientRepository.findByStatusIn("Pharmacy");
     }
 
 }
