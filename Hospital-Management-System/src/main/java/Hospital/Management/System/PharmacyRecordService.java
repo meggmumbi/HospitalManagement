@@ -40,7 +40,7 @@ public class PharmacyRecordService {
     public Optional<PharmacyRecord> getPharmacy(Long recordId) {
         return _pharmacyRecordsRepository.findByrecordId(recordId);
     }
-    public Optional<PharmacyRecord> getPharmacyRecord(Long patientId) {
+    public List<PharmacyRecord> getPharmacyRecord(Long patientId) {
         return _pharmacyRecordsRepository.findBypatientId(patientId);
     }
 

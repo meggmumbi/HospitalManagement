@@ -18,9 +18,10 @@ public class PharmacyRecord {
     @Id
     private Long recordId;
     private Long itemId;
+    private String name;
     private Long patientId;
     private int quantity;
     private double price;
-    private double totals;
+    private double total;
 
 }

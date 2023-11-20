@@ -48,12 +48,12 @@ public class PharmacyRecordsController {
         }
     }
 
-    @GetMapping("/{patientId}")
-    public ResponseEntity<PharmacyRecord> getPharmacyRecords(@PathVariable String patientId) {
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity<List<PharmacyRecord>> getPharmacyRecords(@PathVariable String patientId) {
 
-        Optional<PharmacyRecord> pharmacy = _pharmacyRecordService.getPharmacyRecord(Long.parseLong(patientId));
-        if (pharmacy.isPresent()) {
-            return new ResponseEntity<>(pharmacy.get(), HttpStatus.OK);
+        List<PharmacyRecord> pharmacyRecords = _pharmacyRecordService.getPharmacyRecord(Long.parseLong(patientId));
+        if (!pharmacyRecords.isEmpty()) {
+            return new ResponseEntity<>(pharmacyRecords, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
