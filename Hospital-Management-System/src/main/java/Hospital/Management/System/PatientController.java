@@ -6,6 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -42,14 +46,18 @@ public class PatientController {
     {
         long patientId = generateNextPatientId("patient_sequence");
 
-        // Create a new patient with the custom ID
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate registrationDate = LocalDate.parse(payload.get("registrationDate"), formatter);
+        Date newDate = java.sql.Date.valueOf(registrationDate);
         Patient newPatient = _patientService.createPatient(
                 patientId,
                 Integer.parseInt(payload.get("age")),
                 payload.get("name"),
                 payload.get("gender"),
                 payload.get("contacts"),
-                payload.get("insuranceDetails")
+                payload.get("insuranceDetails"),
+                payload.get("address"),
+                newDate
         );
 
         return new ResponseEntity<>(newPatient, HttpStatus.CREATED);
@@ -76,6 +84,30 @@ public class PatientController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @DeleteMapping("/{patientId}")
+    public ResponseEntity<Void> deletePharmacy(@PathVariable String patientId) {
+
+        boolean deleted = _patientService.deletePharmacy(Long.parseLong(patientId));
+
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/getByStatus")
+    public ResponseEntity<List<Patient>> getPatientsByStatus() {
+        return new ResponseEntity<List<Patient>>(_patientService.getPatientsByStatus(), HttpStatus.OK);
+
+    }
+
+    @GetMapping("/getByPharmacyStatus")
+    public ResponseEntity<List<Patient>> getByPharmacyStatus() {
+        return new ResponseEntity<List<Patient>>(_patientService.getPatientsByPharmacyStatus(), HttpStatus.OK);
+
     }
 
 }
